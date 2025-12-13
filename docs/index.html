@@ -13,8 +13,6 @@
       --heading-secondary: #504945;
       --border-color: #d5c4a1;
       --code-bg: #ebdbb2;
-      --summary-bg: #f2e5bc;
-      --summary-border: #8f3f71;
       --link-color: #8f3f71;
       --muted-color: #7c6f64;
     }
@@ -27,8 +25,6 @@
       --heading-secondary: #d5c4a1;
       --border-color: #504945;
       --code-bg: #3c3836;
-      --summary-bg: #32302f;
-      --summary-border: #d3869b;
       --link-color: #d3869b;
       --muted-color: #928374;
     }
@@ -42,8 +38,6 @@
         --heading-secondary: #d5c4a1;
         --border-color: #504945;
         --code-bg: #3c3836;
-        --summary-bg: #32302f;
-        --summary-border: #d3869b;
         --link-color: #d3869b;
         --muted-color: #928374;
       }
@@ -136,14 +130,6 @@
       text-decoration: underline;
     }
 
-    .summary {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-      padding: 1rem;
-      background: var(--summary-bg);
-      border-left: 4px solid var(--summary-border);
-    }
-
     footer {
       margin-top: 3rem;
       padding-top: 2rem;
@@ -164,10 +150,6 @@
       font-size: 0.9rem;
       color: var(--text-color);
       transition: all 0.3s;
-    }
-
-    .theme-toggle:hover {
-      background: var(--summary-bg);
     }
 
     nav {
@@ -193,9 +175,9 @@
   </header>
 
   <main>
-    <section class="summary">
-      <p>A TOML-based resume format with strict validation and clear error messages.</p>
-    </section>
+    <blockquote>
+      A TOML-based resume format with strict validation and clear error messages.
+    </blockquote>
 
     <section>
       <h2>What is JOBL?</h2>
