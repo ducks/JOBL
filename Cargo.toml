@@ -1,0 +1,13 @@
+[package]
+name = "jobl"
+version = "0.1.0"
+edition = "2021"
+authors = ["Jake Goldsborough"]
+license = "MIT"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.8"
+thiserror = "1.0"
+
+[dev-dependencies]

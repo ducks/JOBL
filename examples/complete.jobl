@@ -1,0 +1,70 @@
+[person]
+name = 'Jane Doe'
+headline = 'Senior Software Engineer'
+location = 'San Francisco, CA'
+email = 'jane.doe@example.com'
+website = 'https://janedoe.dev'
+phone = '+1-555-0123'
+summary = '''
+Experienced software engineer specializing in systems programming and
+infrastructure. Passionate about building reliable, performant tools.
+'''
+
+[skills]
+languages = ['Rust', 'Python', 'Go', 'JavaScript']
+systems = ['Linux', 'Docker', 'Kubernetes']
+databases = ['PostgreSQL', 'Redis']
+tools = ['Git', 'Vim', 'Terraform']
+
+[[experience]]
+title = 'Senior Software Engineer'
+company = 'Tech Corp'
+location = 'San Francisco, CA'
+start = '2020-03'
+end = 'present'
+summary = 'Lead infrastructure team building developer tools'
+technologies = ['Rust', 'Kubernetes', 'PostgreSQL']
+highlights = [
+  'Reduced deployment time by 70% through automation',
+  'Built internal CLI tool used by 200+ engineers',
+  'Mentored 5 junior engineers'
+]
+
+[[experience]]
+title = 'Software Engineer'
+company = 'Startup Inc'
+location = 'Remote'
+start = '2018-01'
+end = '2020-02'
+summary = 'Full-stack development on SaaS platform'
+technologies = ['Python', 'React', 'PostgreSQL']
+highlights = [
+  'Implemented real-time collaboration features',
+  'Improved API performance by 3x'
+]
+
+[[projects]]
+name = 'rust-cli-template'
+url = 'https://github.com/janedoe/rust-cli-template'
+summary = 'Production-ready template for Rust CLI applications'
+role = 'Creator and maintainer'
+start = '2021-06'
+technologies = ['Rust', 'clap', 'tokio']
+
+[[projects]]
+name = 'open-metrics-exporter'
+url = 'https://github.com/janedoe/metrics'
+summary = 'Lightweight metrics exporter for custom applications'
+role = 'Core contributor'
+technologies = ['Rust', 'Prometheus']
+
+[[education]]
+institution = 'University of Technology'
+degree = 'BS Computer Science'
+location = 'Boston, MA'
+start = '2014-09'
+end = '2018-05'
+details = [
+  'GPA: 3.8/4.0',
+  'Focus: Systems and Networks'
+]
