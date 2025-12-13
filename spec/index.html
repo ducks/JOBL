@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Specification - JOBL</title>
+  <meta name="description" content="A TOML-based resume format">
+  <link rel="stylesheet" href="https://jobl.dev/style.css">
+</head>
+<body>
+  <header>
+    <h1><a href="https://jobl.dev" style="color: inherit; text-decoration: none;">JOBL</a></h1>
+    <nav>
+      <a href="https://jobl.dev">Home</a>
+      <a href="https://jobl.dev/spec">Spec</a>
+      <a href="https://github.com/ducks/JOBL">GitHub</a>
+      <a href="https://github.com/ducks/SRG">SRG</a>
+      <a href="https://hostedresumes.com">hostedresumes.com</a>
+    </nav>
+  </header>
+
+  <main>
+    
+<h1>Specification</h1>
+<h1 id="jobl-format-specification">JOBL Format Specification</h1>
+<p>A TOML-encoded resume file format with strict validation.</p>
+<h2 id="file-extension">File Extension</h2>
+<p><code>.jobl</code></p>
+<h2 id="top-level-keys">Top-Level Keys</h2>
+<ul>
+<li><code>person</code> (required): Personal information table</li>
+<li><code>skills</code> (optional): Skills organized by category</li>
+<li><code>experience</code> (optional): Array of work experience</li>
+<li><code>projects</code> (optional): Array of projects</li>
+<li><code>education</code> (optional): Array of education entries</li>
+</ul>
+<p>Unknown top-level keys are errors.</p>
+<h2 id="person-section">Person Section</h2>
+<p><strong>Required:</strong></p>
+<ul>
+<li><code>name</code>: Full name</li>
+</ul>
+<p><strong>Optional:</strong></p>
+<ul>
+<li><code>headline</code>: Professional headline</li>
+<li><code>location</code>: Current location</li>
+<li><code>email</code>: Contact email</li>
+<li><code>website</code>: Personal website URL</li>
+<li><code>phone</code>: Contact phone</li>
+<li><code>summary</code>: Professional summary</li>
+</ul>
+<p>Unknown fields in the person section are errors.</p>
+<h2 id="skills-section">Skills Section</h2>
+<p>A table mapping category names to arrays of skill strings.</p>
+<p>Example:</p>
+<pre data-lang="toml" style="background-color:#2b303b;color:#c0c5ce;" class="language-toml "><code class="language-toml" data-lang="toml"><span>[skills]
+</span><span style="color:#bf616a;">languages </span><span>= [&quot;</span><span style="color:#a3be8c;">Rust</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">Python</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">JavaScript</span><span>&quot;]
+</span><span style="color:#bf616a;">devops </span><span>= [&quot;</span><span style="color:#a3be8c;">Docker</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">Kubernetes</span><span>&quot;]
+</span></code></pre>
+<h2 id="experience-items">Experience Items</h2>
+<p>Each item in the <code>experience</code> array.</p>
+<p><strong>Required:</strong></p>
+<ul>
+<li><code>title</code>: Job title</li>
+<li><code>company</code>: Company name</li>
+</ul>
+<p><strong>Optional:</strong></p>
+<ul>
+<li><code>location</code>: Job location</li>
+<li><code>start</code>: Start date (recommend 'YYYY-MM' format)</li>
+<li><code>end</code>: End date or 'present'</li>
+<li><code>summary</code>: Role summary</li>
+<li><code>technologies</code>: Array of technologies used</li>
+<li><code>highlights</code>: Array of achievement highlights</li>
+</ul>
+<p>Unknown fields in experience items are errors.</p>
+<h2 id="project-items">Project Items</h2>
+<p>Each item in the <code>projects</code> array.</p>
+<p><strong>Required:</strong></p>
+<ul>
+<li><code>name</code>: Project name</li>
+</ul>
+<p><strong>Optional:</strong></p>
+<ul>
+<li><code>url</code>: Project URL</li>
+<li><code>summary</code>: Project description</li>
+<li><code>role</code>: Your role</li>
+<li><code>start</code>: Start date</li>
+<li><code>end</code>: End date</li>
+<li><code>technologies</code>: Array of technologies</li>
+</ul>
+<p>Unknown fields in project items are errors.</p>
+<h2 id="education-items">Education Items</h2>
+<p>Each item in the <code>education</code> array.</p>
+<p><strong>Required:</strong></p>
+<ul>
+<li><code>institution</code>: School or institution name</li>
+<li><code>degree</code>: Degree or certification</li>
+</ul>
+<p><strong>Optional:</strong></p>
+<ul>
+<li><code>location</code>: Institution location</li>
+<li><code>start</code>: Start date</li>
+<li><code>end</code>: End date</li>
+<li><code>details</code>: Array of additional details</li>
+</ul>
+<p>Unknown fields in education items are errors.</p>
+<h2 id="validation">Validation</h2>
+<p>The parser performs strict validation:</p>
+<ul>
+<li>Unknown top-level keys are errors</li>
+<li>Unknown fields in sections are errors</li>
+<li>Type mismatches are errors</li>
+<li>Multiple errors are collected and reported together</li>
+</ul>
+<p>Errors include path context for debugging:</p>
+<ul>
+<li><code>person.name</code>: Missing required field</li>
+<li><code>experience[0].unknown</code>: Unknown field in first experience item</li>
+<li><code>skills.languages</code>: Invalid type</li>
+</ul>
+<h2 id="versioning">Versioning</h2>
+<p>JOBL does not require a version field in documents. The library version determines which specification features are supported.</p>
+<h2 id="example">Example</h2>
+<pre data-lang="toml" style="background-color:#2b303b;color:#c0c5ce;" class="language-toml "><code class="language-toml" data-lang="toml"><span>[person]
+</span><span style="color:#bf616a;">name </span><span>= &quot;</span><span style="color:#a3be8c;">Jane Developer</span><span>&quot;
+</span><span style="color:#bf616a;">email </span><span>= &quot;</span><span style="color:#a3be8c;">jane@example.com</span><span>&quot;
+</span><span style="color:#bf616a;">headline </span><span>= &quot;</span><span style="color:#a3be8c;">Senior Software Engineer</span><span>&quot;
+</span><span style="color:#bf616a;">location </span><span>= &quot;</span><span style="color:#a3be8c;">San Francisco, CA</span><span>&quot;
+</span><span style="color:#bf616a;">website </span><span>= &quot;</span><span style="color:#a3be8c;">https://jane.dev</span><span>&quot;
+</span><span style="color:#bf616a;">summary </span><span>= &quot;</span><span style="color:#a3be8c;">Experienced engineer specializing in distributed systems</span><span>&quot;
+</span><span>
+</span><span>[skills]
+</span><span style="color:#bf616a;">languages </span><span>= [&quot;</span><span style="color:#a3be8c;">Rust</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">Python</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">Go</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">JavaScript</span><span>&quot;]
+</span><span style="color:#bf616a;">frameworks </span><span>= [&quot;</span><span style="color:#a3be8c;">Tokio</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">Django</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">React</span><span>&quot;]
+</span><span style="color:#bf616a;">tools </span><span>= [&quot;</span><span style="color:#a3be8c;">Docker</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">Kubernetes</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">PostgreSQL</span><span>&quot;]
+</span><span>
+</span><span>[[experience]]
+</span><span style="color:#bf616a;">title </span><span>= &quot;</span><span style="color:#a3be8c;">Senior Software Engineer</span><span>&quot;
+</span><span style="color:#bf616a;">company </span><span>= &quot;</span><span style="color:#a3be8c;">Tech Corp</span><span>&quot;
+</span><span style="color:#bf616a;">location </span><span>= &quot;</span><span style="color:#a3be8c;">San Francisco, CA</span><span>&quot;
+</span><span style="color:#bf616a;">start </span><span>= &quot;</span><span style="color:#a3be8c;">2020-01</span><span>&quot;
+</span><span style="color:#bf616a;">end </span><span>= &quot;</span><span style="color:#a3be8c;">present</span><span>&quot;
+</span><span style="color:#bf616a;">summary </span><span>= &quot;</span><span style="color:#a3be8c;">Lead engineer for distributed data platform</span><span>&quot;
+</span><span style="color:#bf616a;">technologies </span><span>= [&quot;</span><span style="color:#a3be8c;">Rust</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">Kubernetes</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">PostgreSQL</span><span>&quot;]
+</span><span style="color:#bf616a;">highlights </span><span>= [
+</span><span>  &quot;</span><span style="color:#a3be8c;">Designed and built distributed event processing system handling 1M+ events/sec</span><span>&quot;,
+</span><span>  &quot;</span><span style="color:#a3be8c;">Led team of 5 engineers through migration to microservices architecture</span><span>&quot;,
+</span><span>  &quot;</span><span style="color:#a3be8c;">Reduced infrastructure costs by 40% through optimization</span><span>&quot;
+</span><span>]
+</span><span>
+</span><span>[[experience]]
+</span><span style="color:#bf616a;">title </span><span>= &quot;</span><span style="color:#a3be8c;">Software Engineer</span><span>&quot;
+</span><span style="color:#bf616a;">company </span><span>= &quot;</span><span style="color:#a3be8c;">Startup Inc</span><span>&quot;
+</span><span style="color:#bf616a;">location </span><span>= &quot;</span><span style="color:#a3be8c;">Remote</span><span>&quot;
+</span><span style="color:#bf616a;">start </span><span>= &quot;</span><span style="color:#a3be8c;">2018-06</span><span>&quot;
+</span><span style="color:#bf616a;">end </span><span>= &quot;</span><span style="color:#a3be8c;">2019-12</span><span>&quot;
+</span><span style="color:#bf616a;">summary </span><span>= &quot;</span><span style="color:#a3be8c;">Full-stack engineer on core product team</span><span>&quot;
+</span><span style="color:#bf616a;">technologies </span><span>= [&quot;</span><span style="color:#a3be8c;">Python</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">Django</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">React</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">PostgreSQL</span><span>&quot;]
+</span><span style="color:#bf616a;">highlights </span><span>= [
+</span><span>  &quot;</span><span style="color:#a3be8c;">Built REST API serving 10k+ requests/minute</span><span>&quot;,
+</span><span>  &quot;</span><span style="color:#a3be8c;">Implemented real-time collaboration features</span><span>&quot;
+</span><span>]
+</span><span>
+</span><span>[[projects]]
+</span><span style="color:#bf616a;">name </span><span>= &quot;</span><span style="color:#a3be8c;">open-source-project</span><span>&quot;
+</span><span style="color:#bf616a;">url </span><span>= &quot;</span><span style="color:#a3be8c;">https://github.com/jane/project</span><span>&quot;
+</span><span style="color:#bf616a;">summary </span><span>= &quot;</span><span style="color:#a3be8c;">High-performance data processing library</span><span>&quot;
+</span><span style="color:#bf616a;">role </span><span>= &quot;</span><span style="color:#a3be8c;">Creator and maintainer</span><span>&quot;
+</span><span style="color:#bf616a;">technologies </span><span>= [&quot;</span><span style="color:#a3be8c;">Rust</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">SIMD</span><span>&quot;]
+</span><span>
+</span><span>[[education]]
+</span><span style="color:#bf616a;">institution </span><span>= &quot;</span><span style="color:#a3be8c;">University of California</span><span>&quot;
+</span><span style="color:#bf616a;">degree </span><span>= &quot;</span><span style="color:#a3be8c;">BS Computer Science</span><span>&quot;
+</span><span style="color:#bf616a;">location </span><span>= &quot;</span><span style="color:#a3be8c;">Berkeley, CA</span><span>&quot;
+</span><span style="color:#bf616a;">start </span><span>= &quot;</span><span style="color:#a3be8c;">2014</span><span>&quot;
+</span><span style="color:#bf616a;">end </span><span>= &quot;</span><span style="color:#a3be8c;">2018</span><span>&quot;
+</span><span style="color:#bf616a;">details </span><span>= [&quot;</span><span style="color:#a3be8c;">GPA: 3.8</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">Dean&#39;s List</span><span>&quot;]
+</span></code></pre>
+
+
+  </main>
+
+  <footer>
+    <p>JOBL - A TOML-based resume format</p>
+  </footer>
+</body>
+</html>
