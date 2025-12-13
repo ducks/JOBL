@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JOBL Specification</title>
+  <style>
+    :root {
+      /* Gruvbox Light */
+      --bg-color: #fbf1c7;
+      --text-color: #3c3836;
+      --heading-color: #282828;
+      --heading-secondary: #504945;
+      --border-color: #d5c4a1;
+      --code-bg: #ebdbb2;
+      --summary-bg: #f2e5bc;
+      --summary-border: #8f3f71;
+      --link-color: #8f3f71;
+      --muted-color: #7c6f64;
+    }
+
+    [data-theme="dark"] {
+      /* Gruvbox Dark */
+      --bg-color: #282828;
+      --text-color: #ebdbb2;
+      --heading-color: #fbf1c7;
+      --heading-secondary: #d5c4a1;
+      --border-color: #504945;
+      --code-bg: #3c3836;
+      --summary-bg: #32302f;
+      --summary-border: #d3869b;
+      --link-color: #d3869b;
+      --muted-color: #928374;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        /* Gruvbox Dark */
+        --bg-color: #282828;
+        --text-color: #ebdbb2;
+        --heading-color: #fbf1c7;
+        --heading-secondary: #d5c4a1;
+        --border-color: #504945;
+        --code-bg: #3c3836;
+        --summary-bg: #32302f;
+        --summary-border: #d3869b;
+        --link-color: #d3869b;
+        --muted-color: #928374;
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: var(--bg-color);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--heading-color);
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: var(--heading-color);
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.8rem;
+      color: var(--heading-secondary);
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+
+    code {
+      background: var(--code-bg);
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      font-family: "Monaco", "Courier New", monospace;
+      font-size: 0.9em;
+    }
+
+    pre {
+      background: var(--code-bg);
+      padding: 1rem;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+    }
+
+    ul {
+      margin-left: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    strong {
+      color: var(--heading-color);
+      font-weight: 600;
+    }
+
+    a {
+      color: var(--link-color);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .summary {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background: var(--summary-bg);
+      border-left: 4px solid var(--summary-border);
+    }
+
+    footer {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-color);
+      color: var(--muted-color);
+      font-size: 0.9rem;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--text-color);
+      transition: all 0.3s;
+    }
+
+    .theme-toggle:hover {
+      background: var(--summary-bg);
+    }
+
+    nav {
+      margin-bottom: 2rem;
+    }
+
+    nav a {
+      margin-right: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" id="themeToggle">Toggle Theme</button>
+
+  <header>
+    <h1>JOBL Format Specification</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/spec.html">Spec</a>
+      <a href="https://github.com/ducks/JOBL">GitHub</a>
+      <a href="https://github.com/ducks/SRG">SRG</a>
+      <a href="https://hostedresumes.com">hostedresumes.com</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="summary">
+      <p>A TOML-encoded resume file format with strict validation.</p>
+    </section>
+
+    <section>
+      <h2>File Extension</h2>
+      <p><code>.jobl</code></p>
+    </section>
+
+    <section>
+      <h2>Top-Level Keys</h2>
+      <ul>
+        <li><code>person</code> (required): Personal information table</li>
+        <li><code>skills</code> (optional): Skills organized by category</li>
+        <li><code>experience</code> (optional): Array of work experience</li>
+        <li><code>projects</code> (optional): Array of projects</li>
+        <li><code>education</code> (optional): Array of education entries</li>
+      </ul>
+      <p>Unknown top-level keys are errors.</p>
+    </section>
+
+    <section>
+      <h2>Person Section</h2>
+      <h3>Required</h3>
+      <ul>
+        <li><code>name</code>: Full name</li>
+      </ul>
+      <h3>Optional</h3>
+      <ul>
+        <li><code>headline</code>: Professional headline</li>
+        <li><code>location</code>: Current location</li>
+        <li><code>email</code>: Contact email</li>
+        <li><code>website</code>: Personal website URL</li>
+        <li><code>phone</code>: Contact phone</li>
+        <li><code>summary</code>: Professional summary</li>
+      </ul>
+      <p>Unknown fields in the person section are errors.</p>
+    </section>
+
+    <section>
+      <h2>Skills Section</h2>
+      <p>A table mapping category names to arrays of skill strings.</p>
+      <p>Example:</p>
+      <pre><code>[skills]
+languages = ["Rust", "Python", "JavaScript"]
+devops = ["Docker", "Kubernetes"]</code></pre>
+    </section>
+
+    <section>
+      <h2>Experience Items</h2>
+      <p>Each item in the <code>experience</code> array.</p>
+      <h3>Required</h3>
+      <ul>
+        <li><code>title</code>: Job title</li>
+        <li><code>company</code>: Company name</li>
+      </ul>
+      <h3>Optional</h3>
+      <ul>
+        <li><code>location</code>: Job location</li>
+        <li><code>start</code>: Start date (recommend 'YYYY-MM' format)</li>
+        <li><code>end</code>: End date or 'present'</li>
+        <li><code>summary</code>: Role summary</li>
+        <li><code>technologies</code>: Array of technologies used</li>
+        <li><code>highlights</code>: Array of achievement highlights</li>
+      </ul>
+      <p>Unknown fields in experience items are errors.</p>
+    </section>
+
+    <section>
+      <h2>Project Items</h2>
+      <p>Each item in the <code>projects</code> array.</p>
+      <h3>Required</h3>
+      <ul>
+        <li><code>name</code>: Project name</li>
+      </ul>
+      <h3>Optional</h3>
+      <ul>
+        <li><code>url</code>: Project URL</li>
+        <li><code>summary</code>: Project description</li>
+        <li><code>role</code>: Your role</li>
+        <li><code>start</code>: Start date</li>
+        <li><code>end</code>: End date</li>
+        <li><code>technologies</code>: Array of technologies</li>
+      </ul>
+      <p>Unknown fields in project items are errors.</p>
+    </section>
+
+    <section>
+      <h2>Education Items</h2>
+      <p>Each item in the <code>education</code> array.</p>
+      <h3>Required</h3>
+      <ul>
+        <li><code>institution</code>: School or institution name</li>
+        <li><code>degree</code>: Degree or certification</li>
+      </ul>
+      <h3>Optional</h3>
+      <ul>
+        <li><code>location</code>: Institution location</li>
+        <li><code>start</code>: Start date</li>
+        <li><code>end</code>: End date</li>
+        <li><code>details</code>: Array of additional details</li>
+      </ul>
+      <p>Unknown fields in education items are errors.</p>
+    </section>
+
+    <section>
+      <h2>Validation</h2>
+      <p>The parser performs strict validation:</p>
+      <ul>
+        <li>Unknown top-level keys are errors</li>
+        <li>Unknown fields in sections are errors</li>
+        <li>Type mismatches are errors</li>
+        <li>Multiple errors are collected and reported together</li>
+      </ul>
+      <p>Errors include path context for debugging:</p>
+      <ul>
+        <li><code>person.name</code>: Missing required field</li>
+        <li><code>experience[0].unknown</code>: Unknown field in first experience item</li>
+        <li><code>skills.languages</code>: Invalid type</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Versioning</h2>
+      <p>JOBL does not require a version field in documents. The library version determines which specification features are supported.</p>
+    </section>
+
+    <section>
+      <h2>Example</h2>
+      <pre><code>[person]
+name = "Jane Developer"
+email = "jane@example.com"
+headline = "Senior Software Engineer"
+location = "San Francisco, CA"
+website = "https://jane.dev"
+summary = "Experienced engineer specializing in distributed systems"
+
+[skills]
+languages = ["Rust", "Python", "Go", "JavaScript"]
+frameworks = ["Tokio", "Django", "React"]
+tools = ["Docker", "Kubernetes", "PostgreSQL"]
+
+[[experience]]
+title = "Senior Software Engineer"
+company = "Tech Corp"
+location = "San Francisco, CA"
+start = "2020-01"
+end = "present"
+summary = "Lead engineer for distributed data platform"
+technologies = ["Rust", "Kubernetes", "PostgreSQL"]
+highlights = [
+  "Designed and built distributed event processing system handling 1M+ events/sec",
+  "Led team of 5 engineers through migration to microservices architecture",
+  "Reduced infrastructure costs by 40% through optimization"
+]
+
+[[experience]]
+title = "Software Engineer"
+company = "Startup Inc"
+location = "Remote"
+start = "2018-06"
+end = "2019-12"
+summary = "Full-stack engineer on core product team"
+technologies = ["Python", "Django", "React", "PostgreSQL"]
+highlights = [
+  "Built REST API serving 10k+ requests/minute",
+  "Implemented real-time collaboration features"
+]
+
+[[projects]]
+name = "open-source-project"
+url = "https://github.com/jane/project"
+summary = "High-performance data processing library"
+role = "Creator and maintainer"
+technologies = ["Rust", "SIMD"]
+
+[[education]]
+institution = "University of California"
+degree = "BS Computer Science"
+location = "Berkeley, CA"
+start = "2014"
+end = "2018"
+details = ["GPA: 3.8", "Dean's List"]</code></pre>
+    </section>
+  </main>
+
+  <footer>
+    <p>JOBL specification by <a href="https://jakegoldsborough.com">Jake Goldsborough</a></p>
+  </footer>
+
+  <script>
+    // Theme management
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+
+    // Check for saved theme preference or default to system preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      html.setAttribute('data-theme', savedTheme);
+    }
+
+    // Toggle theme
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
+  </script>
+</body>
+</html>
