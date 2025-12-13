@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ config.title }}{% endblock %}</title>
+  <meta name="description" content="{{ config.description }}">
+  <link rel="stylesheet" href="{{ get_url(path='style.css') }}">
+</head>
+<body>
+  <header>
+    <h1><a href="{{ get_url(path='/') }}" style="color: inherit; text-decoration: none;">{{ config.title }}</a></h1>
+    <nav>
+      <a href="{{ get_url(path='/') }}">Home</a>
+      <a href="{{ get_url(path='/spec') }}">Spec</a>
+      <a href="https://github.com/ducks/JOBL">GitHub</a>
+      <a href="https://github.com/ducks/SRG">SRG</a>
+      <a href="https://hostedresumes.com">hostedresumes.com</a>
+    </nav>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <p>JOBL - A TOML-based resume format</p>
+  </footer>
+</body>
+</html>

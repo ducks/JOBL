@@ -1,0 +1,42 @@
+name: Deploy Docs
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Zola
+        run: |
+          ZOLA_VERSION="0.19.2"
+          wget -q -O zola.tar.gz \
+            "https://github.com/getzola/zola/releases/download/v${ZOLA_VERSION}/zola-v${ZOLA_VERSION}-x86_64-unknown-linux-gnu.tar.gz"
+          tar xzf zola.tar.gz
+          sudo mv zola /usr/local/bin/
+
+      - name: Prepare SPEC.md with front matter
+        run: |
+          echo -e "+++\ntitle = \"Specification\"\n+++\n" > docs/content/spec.md
+          cat SPEC.md >> docs/content/spec.md
+
+      - name: Build site
+        run: |
+          cd docs
+          zola build
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/public
+          publish_branch: gh-pages
+          cname: jobl.dev
