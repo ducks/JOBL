@@ -37,7 +37,7 @@ endif
 	@sed -i 's/^version = .*/version = "$(VERSION_CLEAN)"/' Cargo.toml
 	@echo "Updating Cargo.lock..."
 	@cargo check --quiet 2>/dev/null || true
-	@git add Cargo.toml Cargo.lock
+	@git add Cargo.toml
 	@git commit -m "chore: bump version to $(VERSION_CLEAN)"
 	@echo ""
 	@echo "✓ Created branch release/v$(VERSION_CLEAN)"
