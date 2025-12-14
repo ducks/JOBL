@@ -1,6 +1,6 @@
 [package]
 name = "jobl"
-version = "0.1.0"
+version = "20251214.0.0"
 edition = "2021"
 authors = ["Jake Goldsborough"]
 license = "MIT"
