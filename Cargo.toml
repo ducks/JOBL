@@ -2,8 +2,14 @@
 name = "jobl"
 version = "20251214.0.0"
 edition = "2021"
-authors = ["Jake Goldsborough"]
+authors = ["Jake Goldsborough <github@pancakes.email>"]
+description = "TOML-based resume format with strict validation"
 license = "MIT"
+repository = "https://github.com/ducks/jobl"
+homepage = "https://jobl.dev"
+keywords = ["resume", "cv", "toml", "validation"]
+categories = ["command-line-utilities", "parsing"]
+readme = "README.md"
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
