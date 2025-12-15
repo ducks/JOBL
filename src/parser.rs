@@ -100,8 +100,8 @@ fn validate_no_unknown_fields(
     // Check person section
     if let Some(toml::Value::Table(person_table)) = table.get("person") {
         let allowed: HashSet<&str> = [
-            "name", "headline", "location", "email", "website", "phone",
-            "summary",
+            "name", "headline", "location", "email", "website", "github",
+            "linkedin", "phone", "summary",
         ]
         .into_iter()
         .collect();
