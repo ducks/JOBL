@@ -28,6 +28,10 @@ pub struct Person {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub website: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub github: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub linkedin: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub phone: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub summary: Option<String>,
