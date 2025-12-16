@@ -1,6 +1,6 @@
 [package]
 name = "jobl"
-version = "20251215.0.2"
+version = "20251216.0.0"
 edition = "2021"
 authors = ["Jake Goldsborough <github@pancakes.email>"]
 description = "TOML-based resume format with strict validation"
