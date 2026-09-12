@@ -97,6 +97,16 @@ let doc = parse_file("resume.jobl")?;
 println!("Name: {}", doc.person.name);
 ```
 
+## Tools
+
+- [SRG](https://github.com/ducks/SRG) (Static Resume Generator) takes a JOBL
+  file as input and renders it to HTML and PDF. Hosted at
+  [srg.jobl.dev](https://srg.jobl.dev).
+
+```bash
+srg --input resume.jobl --out dist --template minimal
+```
+
 ## Validation
 
 The parser performs strict validation:
